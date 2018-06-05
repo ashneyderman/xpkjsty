@@ -5,10 +5,52 @@ Secret Token: nYWrD3kM-e56vOcPjG-D375UHws9YqbdAmVr
 
 fetch aldermans:
 --------------
+paging variant:
 curl -H "X-App-Token: ULA5cSpuf2eg99ZGRT71sdWT5" \
   'https://data.cityofchicago.org/resource/7ia9-ayc2.json?$limit=5&$offset=0'
 
+alderman with particular last name:
+curl -v -H "X-App-Token: ULA5cSpuf2eg99ZGRT71sdWT5" \
+  'https://data.cityofchicago.org/resource/7ia9-ayc2.json?$where=alderman+like+%27%25Hairston%25%27'
+
 grafitti reports:
 --------------
+paging variant:
 curl -H "X-App-Token: ULA5cSpuf2eg99ZGRT71sdWT5" \
-  'https://data.cityofchicago.org/resource/cdmx-wzbz.json.json?$limit=5&$offset=0'
+  'https://data.cityofchicago.org/resource/cdmx-wzbz.json?$limit=5&$offset=0'
+
+grafitti request in a particular ward:
+curl -H "X-App-Token: ULA5cSpuf2eg99ZGRT71sdWT5" \
+  'https://data.cityofchicago.org/resource/cdmx-wzbz.json?ward=35&$limit=5&$offset=0'
+
+curl -H "X-App-Token: ULA5cSpuf2eg99ZGRT71sdWT5" \
+  'https://data.cityofchicago.org/resource/cdmx-wzbz.json?$where=ward%3d35+and+creation_date+between+%272018-05-01T00%3a00%3a00.000%27+and+%272018-06-01T00%3a00%3a00.000%27'
+
+curl -H "X-App-Token: ULA5cSpuf2eg99ZGRT71sdWT5" \
+  'https://data.cityofchicago.org/resource/cdmx-wzbz.json?$where=creation_date+between+%272018-05-01T00%3a00%3a00.000%27+and+%272018-06-01T00%3a00%3a00.000%27'
+
+curl -H "X-App-Token: ULA5cSpuf2eg99ZGRT71sdWT5" \
+  'https://data.cityofchicago.org/resource/cdmx-wzbz.json?$where=ward=14+AND+completion_date+between+%272018-05-01T00%3a00%3a00.000%27+and+%272018-06-01T00%3a00%3a00.000%27'
+
+curl -H "X-App-Token: ULA5cSpuf2eg99ZGRT71sdWT5" \
+  'https://data.cityofchicago.org/resource/cdmx-wzbz.json?$where=status+!%3d+%27Completed%27+and+ward%3d14+and+creation_date+between+%272018-05-01T00%3a00%3a00.000%27+and+%272018-06-01T00%3a00%3a00.000%27'
+
+curl -H "X-App-Token: ULA5cSpuf2eg99ZGRT71sdWT5" \
+  'https://data.cityofchicago.org/resource/cdmx-wzbz.json?\
+$select=date_extract_y(creation_date)%2cdate_extract_m(creation_date)%2clocation%2cstatus%2cwhat_type_of_surface_is_the_graffiti_on_%2cwhere_is_the_graffiti_located_&\
+$where=status+!%3d+%27Completed%27+and+ward%3d14+and+creation_date+between+%272018-06-01T00%3a00%3a00.000%27+and+%272018-07-01T00%3a00%3a00.000%27'
+
+curl -H "X-App-Token: ULA5cSpuf2eg99ZGRT71sdWT5" \
+  'https://data.cityofchicago.org/resource/cdmx-wzbz.json?$select=creation_date%2clocation%2cstatus%2cwhat_type_of_surface_is_the_graffiti_on_%2cwhere_is_the_graffiti_located_&$where=status+!%3d+%27Completed%27+and+ward%3d14+and+creation_date+between+%272018-06-01T00%3a00%3a00.000%27+and+%272018-07-01T00%3a00%3a00.000%27'
+
+
+curl -H "X-App-Token: ULA5cSpuf2eg99ZGRT71sdWT5" \
+  'https://data.cityofchicago.org/resource/cdmx-wzbz.json?$query=SELECT+date_extract_y(creation_date)+AS+year%2c+date_extract_m(creation_date)+AS+month%2c+location%2cstatus%2c+what_type_of_surface_is_the_graffiti_on_%2c+where_is_the_graffiti_located_+WHERE+ward%3d14+AND+creation_date+BETWEEN+%272018-06-01T00%3a00%3a00.000%27+AND+%272018-07-01T00%3a00%3a00.000%27'
+
+SELECT date_extract_y(creation_date) AS year,
+       date_extract_m(creation_date) AS month,
+       location,
+       status,
+       what_type_of_surface_is_the_graffiti_on_,
+       where_is_the_graffiti_located_
+WHERE ward = 14 AND creation_date BETWEEN '2018-06-01T00:00:00.000' AND '2018-07-01T00:00:00.000'
