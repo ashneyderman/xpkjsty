@@ -1,0 +1,14 @@
+Name: CityBase Interview
+Description: CityBase Interview
+App Token: ULA5cSpuf2eg99ZGRT71sdWT5
+Secret Token: nYWrD3kM-e56vOcPjG-D375UHws9YqbdAmVr
+
+fetch aldermans:
+--------------
+curl -H "X-App-Token: ULA5cSpuf2eg99ZGRT71sdWT5" \
+  'https://data.cityofchicago.org/resource/7ia9-ayc2.json?$limit=5&$offset=0'
+
+grafitti reports:
+--------------
+curl -H "X-App-Token: ULA5cSpuf2eg99ZGRT71sdWT5" \
+  'https://data.cityofchicago.org/resource/cdmx-wzbz.json.json?$limit=5&$offset=0'
