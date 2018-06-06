@@ -13,13 +13,14 @@ defmodule TCBChallenge.Socrata do
   def grafitti_counts(wards, {_, _}=start_ym, end_ym) when is_list(wards) do
     grafitti_url = Application.get_env(:tcb_challenge, :grafitti_url)
 
+    ward_ids = wards |> Enum.map(&(&1.ward))
     {start_date, end_date} = create_interval(start_ym, end_ym)
     qstring    = select([date_extract_y("creation_date", "year"), 
                          date_extract_m("creation_date", "month"), 
                          "ward", 
                          count()])
                  |> where([
-                           in_("ward", wards),
+                           in_("ward", ward_ids),
                            between("creation_date", "'#{start_date}'", "'#{end_date}'")
                           ])
                  |> group_by(["year", "month", "ward"])
@@ -37,23 +38,32 @@ defmodule TCBChallenge.Socrata do
 
   def all_wards() do
     ward_url = Application.get_env(:tcb_challenge, :ward_url)  
-    qstring = select(["ward", "alderman"]) |> limit(1000) |> query_string()
+    qstring = select(["ward", "alderman"]) 
+              |> limit(1000) 
+              |> query_string()
 
     do_http_get("#{ward_url}.json?#{qstring}")
   end
 
-  def fetch_ward(ward_id, alderman_name) do
+  def fetch_wards_by_alderman(alderman_name) do
     ward_url = Application.get_env(:tcb_challenge, :ward_url) 
-    base = select(["ward", "alderman"])
-    qstring = if ward_id do
-      base |> where(eq("ward", ward_id)) |> query_string()
-    else
-      base |> where(like("alderman", alderman_name)) |> query_string()
-    end
+    qstring  = select(["ward", "alderman"]) 
+               |> where(like("alderman", alderman_name))
+               |> query_string()
 
     do_http_get("#{ward_url}.json?#{qstring}")
   end
 
+  def fetch_wards_by_ids([]), do: {:ok, []}
+  def fetch_wards_by_ids(ward_ids) when is_list(ward_ids) do
+    ward_url = Application.get_env(:tcb_challenge, :ward_url) 
+    qstring  = select(["ward", "alderman"]) 
+               |> where(in_("ward", ward_ids)) 
+               |> query_string()
+    do_http_get("#{ward_url}.json?#{qstring}")
+  end
+  def fetch_wards_by_ids(ward_ids), do: fetch_wards_by_ids([ward_ids])
+  
   defp do_http_get(url) do
     api_token    = Application.get_env(:tcb_challenge, :socrata_api_token)
     url
