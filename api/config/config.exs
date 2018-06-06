@@ -7,7 +7,9 @@ use Mix.Config
 
 # General application configuration
 config :tcb_challenge,
-  socrata_api_token: "ULA5cSpuf2eg99ZGRT71sdWT5"
+  socrata_api_token: "ULA5cSpuf2eg99ZGRT71sdWT5",
+  grafitti_url: "https://data.cityofchicago.org/resource/cdmx-wzbz",
+  ward_url: "https://data.cityofchicago.org/resource/7ia9-ayc2"
 
 # Configures the endpoint
 config :tcb_challenge, TcbChallengeWeb.Endpoint,

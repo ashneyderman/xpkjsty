@@ -38,7 +38,9 @@ defmodule TcbChallenge.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
       {:httpoison, "~> 1.1"},
-      {:timex, "~> 3.3"}
+      {:timex, "~> 3.3"},
+      {:absinthe, "~> 1.4"},
+      {:absinthe_plug, "~> 1.4"},
     ]
   end
 
