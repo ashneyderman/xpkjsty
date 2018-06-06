@@ -7,4 +7,12 @@ defmodule TcbChallengeWeb.Graphql.Types do
     field :alderman, :string
   end
 
+  @desc "Grafitti Report Item"
+  object :report_item do
+    field :ward,  :ward
+    field :count, :integer
+    field :year,  :integer
+    field :month, :integer
+  end
+
 end
