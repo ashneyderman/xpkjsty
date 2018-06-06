@@ -78,6 +78,7 @@ defmodule SODA.Query do
   defp group_by_field(field) when is_binary(field), do: field
   
   defp where_cond({:eq, field, value}) when is_binary(field), do: "#{field} = #{value}"
+  defp where_cond({:like, field, value}) when is_binary(field), do: "#{field} LIKE '%#{value}%'"
   defp where_cond({:between, field, v0, v1}) when is_binary(field), do: "#{field} BETWEEN #{v0} AND #{v1}"
   defp where_cond({:in, field, values}) when is_binary(field) and is_list(values) do
     in_values = values |> Enum.join(",")

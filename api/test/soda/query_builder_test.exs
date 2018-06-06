@@ -18,6 +18,7 @@ defmodule TcbChallenge.SODA.QueryBuilderTest do
     assert where(eq("ward", 123)).where == [{:eq, "ward", 123}]    
     assert where(in_("ward", [123, 345])).where == [{:in, "ward", [123, 345]}]    
     assert (where(in_("ward", [123, 345])) |> where(eq("ward", 123))).where == [{:in, "ward", [123, 345]}, {:eq, "ward", 123}]    
+    assert where(like("alderman", "test")).where == [{:like, "alderman", "test"}]    
   end
 
   test "group_by works as expected" do

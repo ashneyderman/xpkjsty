@@ -51,5 +51,6 @@ defmodule SODA.QueryBuilder do
   def eq(field, value) when is_binary(field), do: {:eq, field, value}
   def between(field, start, stop) when is_binary(field), do: {:between, field, start, stop}
   def in_(field, values) when is_binary(field) and is_list(values), do: {:in, field, values}
+  def like(field, value) when is_binary(field) and is_binary(value), do: {:like, field, value}
   
 end

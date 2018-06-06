@@ -13,6 +13,7 @@ defmodule TcbChallenge.SODA.QueryTest do
     assert %SODA.Query{ where: [{:eq, "ward", 123}] } |> query_string(false) == "SELECT * WHERE ward = 123"
     assert %SODA.Query{ where: [{:in, "ward", [123, 345]}] } |> query_string(false) == "SELECT * WHERE ward in (123,345)"
     assert %SODA.Query{ where: [{:between, "ward", 123, 345}] } |> query_string(false) == "SELECT * WHERE ward BETWEEN 123 AND 345"
+    assert %SODA.Query{ where: [{:like, "alderman", "test"}] } |> query_string(false) == "SELECT * WHERE alderman LIKE '%test%'"
   end
 
   test "constructs limit/offset/group_by properly" do
