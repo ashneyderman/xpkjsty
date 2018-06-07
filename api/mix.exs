@@ -42,6 +42,7 @@ defmodule TcbChallenge.Mixfile do
       {:absinthe, "~> 1.4"},
       {:absinthe_plug, "~> 1.4"},
       {:corsica, "~> 1.1"},
+      {:distillery, "~> 1.5"}
     ]
   end
 
