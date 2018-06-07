@@ -41,6 +41,7 @@ defmodule TcbChallenge.Mixfile do
       {:timex, "~> 3.3"},
       {:absinthe, "~> 1.4"},
       {:absinthe_plug, "~> 1.4"},
+      {:corsica, "~> 1.1"},
     ]
   end
 

@@ -36,6 +36,7 @@ defmodule TcbChallengeWeb.Endpoint do
     key: "_tcb_challenge_key",
     signing_salt: "WqrVQHE+"
 
+  plug TcbChallengeWeb.CORSRouter
   plug TcbChallengeWeb.Router
 
   @doc """
