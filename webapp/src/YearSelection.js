@@ -43,6 +43,8 @@ class YearSelection extends Component {
 
 YearSelection.propTypes = {
   classes: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired, 
+  value: PropTypes.number
 };
 
 export default withStyles(styles)(YearSelection);

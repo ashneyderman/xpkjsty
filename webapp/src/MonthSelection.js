@@ -58,6 +58,8 @@ class MonthSelection extends Component {
 
 MonthSelection.propTypes = {
   classes: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired, 
+  value: PropTypes.number
 };
 
 export default withStyles(styles)(MonthSelection);

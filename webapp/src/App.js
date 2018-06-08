@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { AppBar, Grid, Button, Typography, Divider } from 'material-ui';
 import { withStyles } from 'material-ui/styles';
@@ -166,5 +167,9 @@ const styles = theme => ({
     width: 150,
   },
 });
+
+App.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
 
 export default withStyles(styles, { withTheme: true})(App);

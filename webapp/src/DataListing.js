@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Table, TableHead, TableRow, TableBody, TableCell, Typography } from 'material-ui';
 import { withStyles } from 'material-ui/styles';
@@ -145,5 +146,11 @@ const styles = theme => ({
     tableLayout: 'fixed'
   },
 });
+
+DataListing.propTypes = {
+  classes: PropTypes.object.isRequired,
+  intervalSetup: PropTypes.object.isRequired, 
+  wards: PropTypes.arrayOf(PropTypes.string).isRequired
+};
 
 export default withStyles(styles)(DataListing);

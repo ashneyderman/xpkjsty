@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Button, Card, CardContent, Typography, CardActions } from 'material-ui';
 import { withStyles } from 'material-ui/styles';
 
@@ -79,5 +80,11 @@ const styles = theme => ({
     fontSize: 14,
   },
 });
+
+WardCard.propTypes = {
+  classes: PropTypes.object.isRequired,
+  clearHandler: PropTypes.func.isRequired, 
+  ward: PropTypes.string.isRequired
+};
 
 export default withStyles(styles)(WardCard);

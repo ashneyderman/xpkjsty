@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Dialog, DialogContent, DialogContentText,
          DialogActions, Button, Select, MenuItem,
@@ -98,5 +99,13 @@ const styles = theme => ({
     width: '100%',
   }
 });
+
+AddWardDialog.propTypes = {
+  classes: PropTypes.object.isRequired,
+  handleDialogClose: PropTypes.func.isRequired,
+  handleSelection: PropTypes.func.isRequired,
+  excluded: PropTypes.arrayOf(PropTypes.string),
+  addingWard: PropTypes.bool.isRequired
+};
 
 export default withStyles(styles)(AddWardDialog);

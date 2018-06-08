@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Card, CardContent, CardActions, 
          Typography, FormGroup, FormHelperText, Button } from 'material-ui';
 import { withStyles } from 'material-ui/styles';
@@ -118,5 +119,10 @@ const styles = theme => ({
     fontSize: 14,
   },
 });
+
+IntervalSelection.propTypes = {
+  classes: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
 
 export default withStyles(styles)(IntervalSelection);
