@@ -1,7 +1,47 @@
 ## Build Instructions
 
+Solution consists of two parts:
 
-## Implementation Notes:
+  * Elixir API backend, located in api subdirectory
+  * UI that access the APIs to display reports and provide users with a way to specify arguments for the report generation. This portion is located in webapp subdirectory.
+
+#### API build instructions
+
+  * Have elixir installed on your system. I used elixir version 1.5.2 on my machine
+  * cd ./api
+  * mix deps.get
+  * iex -S mix
+
+  This will result in API backend running on port 4000. You have access to:
+  
+  * GraphIQL interface http://localhost:4000/graphiql
+  * API http://localhost:4000/api
+  * Status http://localhost:4000/status
+
+  A working version of the service was deployed to the cloud
+
+    GrapIQL - https://tcbchalapi.kocomojo.net/graphiql
+    API - https://tcbchalapi.kocomojo.net/api
+    Status - https://tcbchalapi.kocomojo.net/status
+
+#### Webapp build instructions
+
+  * Have a latest(ish) version of node installed. I used v9.4.0
+  * cd webapp
+  * npm install
+  * npm run start
+
+  If all goes well application will startup on port 3000. You can access it
+
+  * Webapp - http://localhost:3000/
+
+  A working version of the application was  deployed to the cloud
+
+  * Webapp - https://tcbchalapp.kocomojo.net/
+
+  Webapp was created with the help of react-create-app scripts. So, all you know about that project applies here too.
+
+## API Known problems:
 
 * ORDER BY does not seem to work. I tried to add ORDER BY clause to the solution but socrata service complains about malformed query. I ran put of time to figure out why:
 

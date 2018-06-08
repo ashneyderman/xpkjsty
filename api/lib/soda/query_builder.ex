@@ -1,6 +1,7 @@
 defmodule SODA.QueryBuilder do
   @moduledoc """
-  Builder that helps constructing SODA.Query structure.
+  Builder that constructs SODA.Query structure. The structure can be used
+  to run validations and translation into a SODA query.
 
   Example:
 

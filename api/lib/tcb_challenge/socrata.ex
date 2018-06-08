@@ -1,6 +1,8 @@
 defmodule TCBChallenge.Socrata do
   @moduledoc """
-  
+  SOCRATA services. Given our challenge's needs we construct queries with 
+  SODA.QueryBuilder and SODA.Query modules then execute HTTP request using 
+  HTTPoison.
   """
 
   import SODA.QueryBuilder
@@ -9,6 +11,7 @@ defmodule TCBChallenge.Socrata do
   require Logger
 
   @doc """
+  Retrieves a list of grafitti report items for the list of wards and provided year/month interval.
   """
   def grafitti_counts(wards, {_, _}=start_ym, end_ym) when is_list(wards) do
     grafitti_url = Application.get_env(:tcb_challenge, :grafitti_url)
@@ -36,6 +39,10 @@ defmodule TCBChallenge.Socrata do
     grafitti_counts(ward, start_ym, nil)
   end
 
+  @doc """
+  Fetch information on all wards. We limit fileds to only those
+  needed by the challenge.
+  """
   def all_wards() do
     ward_url = Application.get_env(:tcb_challenge, :ward_url)  
     qstring = select(["ward", "alderman"]) 
@@ -45,6 +52,9 @@ defmodule TCBChallenge.Socrata do
     do_http_get("#{ward_url}.json?#{qstring}")
   end
 
+  @doc """
+  Fetch ward information where alderman's name partially matches the argument's value.
+  """
   def fetch_wards_by_alderman(alderman_name) do
     ward_url = Application.get_env(:tcb_challenge, :ward_url) 
     qstring  = select(["ward", "alderman"]) 
@@ -54,6 +64,9 @@ defmodule TCBChallenge.Socrata do
     do_http_get("#{ward_url}.json?#{qstring}")
   end
 
+  @doc """
+  Fetch information on all wards by their matching ward numbers.
+  """
   def fetch_wards_by_ids([]), do: {:ok, []}
   def fetch_wards_by_ids(ward_ids) when is_list(ward_ids) do
     ward_url = Application.get_env(:tcb_challenge, :ward_url) 

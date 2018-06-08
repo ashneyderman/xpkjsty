@@ -1,6 +1,7 @@
 defmodule SODA.Query do
   @moduledoc """
-  Module that helps constructing SODA $query parameter based on SODA.Query structure.
+  Module that translates SODA.Query structure into $query parameter that can
+  be passed to a SODA based web service.
   """
 
   defstruct select: [],
