@@ -40,11 +40,23 @@ class IntervalSelection extends Component {
     let prospectiveState = { ...this.state, [field]: event.target.value === "" ? null : event.target.value }
     let invalidMessage = this.validCombination(prospectiveState);
     if(invalidMessage == null) {
-      this.setState((prevState) => (prospectiveState));
+      this.setState(prospectiveState);
       this.props.onChange(prospectiveState);
     } else {
       displayError(invalidMessage);
     }
+  }
+
+  onReset = () => {
+    const initialValue = { 
+      fromYear: new Date().getFullYear(),
+      fromMonth: null,
+      toYear: null,
+      toMonth: null 
+    };
+
+    this.props.onChange(initialValue);
+    this.setState(initialValue);
   }
 
   render() {
@@ -86,9 +98,7 @@ class IntervalSelection extends Component {
               </FormGroup>
             </CardContent>
             <CardActions>
-              <Button size="small" onClick={() => {
-  
-              }}>Reset</Button>
+              <Button size="small" onClick={this.onReset}>Reset</Button>
             </CardActions>
           </Card>
         </div>

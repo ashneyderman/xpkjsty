@@ -49,7 +49,6 @@ class App extends Component {
   }
 
   resetIntervalSetup = (newSetup) => {
-    console.log('newSetup: ', newSetup);
     this.setState((prevState) => ({
       ...prevState,
       intervalSetup: newSetup
