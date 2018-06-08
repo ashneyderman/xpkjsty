@@ -1,44 +1,72 @@
 import React, { Component } from 'react';
-import { AppBar, Grid, Button, Typography } from 'material-ui';
+import _ from 'lodash';
+import { AppBar, Grid, Button, Typography, Divider } from 'material-ui';
 import { withStyles } from 'material-ui/styles';
 
 import WardCard from './WardCard';
 import IntervalSelection from './IntervalSelection';
 import DataListing from './DataListing';
+import AddWardDialog from './AddWardDialog';
 
 import AddIcon from 'material-ui-icons/Add';
 
 class App extends Component {
 
   state = {
-    wards: [{ward: 14, alderman: "Alex Shneyderman"}, 
-            {ward: 35, alderman: "Rick Herman"}],
+    wards: [],
     intervalSetup: {
-      fromYear: 2018,
+      fromYear: new Date().getFullYear(),
       fromMonth: null,
       toYear: null,
       toMonth: null
-    }
+    },
+    addingWard: false
   }
   
+  handleAddWardDialogOpen = () => {
+    this.setState((prevState) => ({ ...prevState, addingWard: true }));
+  }
+
+  handleAddWardDialogClose = () => {
+    this.setState((prevState) => ({ ...prevState, addingWard: false }));
+  }
+
   addWard = (ward) => {
-    this.setState((prevState) => {
-      return { ...prevState, wards: prevState.wards.push(ward) }
-    });
+    this.setState((prevState) => (
+      { ...prevState,
+        addingWard: false, 
+        wards: [ ...prevState.wards, `${ward}`] 
+      }
+    ));
   }
 
   clearWard = (ward) => {
+    this.setState((prevState) => (
+      { ...prevState,
+        wards: _.remove(prevState.wards, (o) => ( o !== ward ))
+      }
+    ))
   }
 
   resetIntervalSetup = (newSetup) => {
-
+    console.log('newSetup: ', newSetup);
+    this.setState((prevState) => ({
+      ...prevState,
+      intervalSetup: newSetup
+    }));
   }
 
   render() {
     let { classes } = this.props;
-    let { wards, intervalSetup }   = this.state;
+    let { wards, intervalSetup, addingWard } = this.state;
     return (
       <div className={classes.root}>
+        <AddWardDialog 
+          excluded={wards}
+          addingWard={addingWard} 
+          handleDialogClose={this.handleAddWardDialogClose}
+          handleSelection={this.addWard}
+        />
         <AppBar position="absolute" className={classes.appBar}>
           <Typography variant="title">
             Chicago Grafitti Requests Reporting
@@ -57,15 +85,44 @@ class App extends Component {
                   <WardCard ward={ward} clearHandler={this.clearWard} />
                 </Grid>
               ))}
-              <Grid key={4} item>
-                <Button variant="fab" color="secondary" aria-label="add" className={classes.button}>
+              <Grid item>
+                <Button 
+                  variant="fab" 
+                  color="secondary" 
+                  aria-label="add" 
+                  className={classes.button}
+                  onClick={this.handleAddWardDialogOpen}
+                  disabled={this.state.wards.length >= 3}
+                >
                   <AddIcon />
                 </Button>
+                
+                {(() => {
+                  if (wards.length === 0) {
+                    return (
+                      <React.Fragment>
+                      <Typography component="p">
+                        To view report data, please click the plus button above
+                        to select a ward.<br /> 
+                        You will be able to selct up-to three different wards. <br />
+                        The data will show up below when enough criteria is specified.
+                      </Typography>
+                      </React.Fragment>
+                    );
+                  }
+                })()}
+                
               </Grid>
             </Grid>
           </Grid>
           <Grid item xs={12}>
-            <DataListing wards={wards} intervalSetup={intervalSetup} />
+          <Divider />
+          </Grid>
+          <Grid item xs={12}>
+            <DataListing 
+              wards={wards} 
+              intervalSetup={intervalSetup} 
+            />
           </Grid>
         </Grid>
       </div>

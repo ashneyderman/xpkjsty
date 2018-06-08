@@ -26,23 +26,15 @@ const months = [
 ]
 
 class MonthSelection extends Component {
-  state = {
-    value: ""
-  };
-
-  handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
-
   render() {
-    const { classes } = this.props;
+    const { classes, onChange, value } = this.props;
 
     return (
       <form autoComplete="off">
         <FormControl className={classes.formControl}>
           <Select
-            value={this.state.value}
-            onChange={this.handleChange}
+            value={value || ''}
+            onChange={onChange}
             placeholder={'Month'}
             inputProps={{
               name: 'value',

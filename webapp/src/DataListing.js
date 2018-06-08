@@ -1,206 +1,147 @@
 import React, { Component } from 'react';
-import { Table, TableHead, TableRow, TableBody, TableCell } from 'material-ui';
-import { withStyles } from 'material-ui/styles';
 import _ from 'lodash';
+import { Table, TableHead, TableRow, TableBody, TableCell, Typography } from 'material-ui';
+import { withStyles } from 'material-ui/styles';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 
-const data = [
-  {
-    "year": 2018,
-    "ward": {
-      "ward": "14",
-      "alderman": "Edward M. Burke"
-    },
-    "month": 1,
-    "count": 553
-  },
-  {
-    "year": 2018,
-    "ward": {
-      "ward": "35",
-      "alderman": "Carlos Ramirez-Rosa"
-    },
-    "month": 1,
-    "count": 541
-  },
-  {
-    "year": 2018,
-    "ward": {
-      "ward": "14",
-      "alderman": "Edward M. Burke"
-    },
-    "month": 2,
-    "count": 573
-  },
-  {
-    "year": 2018,
-    "ward": {
-      "ward": "35",
-      "alderman": "Carlos Ramirez-Rosa"
-    },
-    "month": 2,
-    "count": 542
-  },
-  {
-    "year": 2018,
-    "ward": {
-      "ward": "14",
-      "alderman": "Edward M. Burke"
-    },
-    "month": 3,
-    "count": 572
-  },
-  {
-    "year": 2018,
-    "ward": {
-      "ward": "35",
-      "alderman": "Carlos Ramirez-Rosa"
-    },
-    "month": 3,
-    "count": 372
-  },
-  {
-    "year": 2018,
-    "ward": {
-      "ward": "14",
-      "alderman": "Edward M. Burke"
-    },
-    "month": 4,
-    "count": 428
-  },
-  {
-    "year": 2018,
-    "ward": {
-      "ward": "35",
-      "alderman": "Carlos Ramirez-Rosa"
-    },
-    "month": 4,
-    "count": 413
-  },
-  {
-    "year": 2018,
-    "ward": {
-      "ward": "14",
-      "alderman": "Edward M. Burke"
-    },
-    "month": 5,
-    "count": 459
-  },
-  {
-    "year": 2018,
-    "ward": {
-      "ward": "35",
-      "alderman": "Carlos Ramirez-Rosa"
-    },
-    "month": 5,
-    "count": 561
-  },
-  {
-    "year": 2018,
-    "ward": {
-      "ward": "14",
-      "alderman": "Edward M. Burke"
-    },
-    "month": 6,
-    "count": 57
-  },
-  {
-    "year": 2018,
-    "ward": {
-      "ward": "35",
-      "alderman": "Carlos Ramirez-Rosa"
-    },
-    "month": 6,
-    "count": 69
+const GET_GRAFITTI_REPORT = gql`
+query GetGrafittiReport($fromYear: Int!, 
+                        $fromMonth: Int, 
+                        $toYear: Int,
+                        $toMonth: Int, 
+                        $wardIds: [ID]) {
+  grafittiReport(fromYear: $fromYear, fromMonth: $fromMonth, 
+                 toYear: $toYear, toMonth: $toMonth, 
+                 wardIds: $wardIds){
+    count
+    year
+    month
+    ward {
+      ward
+      alderman
+    }
   }
-];
+}`;
 
 class DataListing extends Component {
   render() {
     let { classes, wards, intervalSetup } = this.props;
-    console.log('wards: ', wards);
-    console.log('intervalSetup: ', intervalSetup);
+    let { fromYear, fromMonth, toYear, toMonth } = intervalSetup; 
+
+    if(!(wards.length > 0 && fromYear)) {
+      return (
+        <Typography color="error">Incomplete Criteia. At least one ward and from year has to be specified.</Typography>
+      );
+    }
 
     let columns = [ { name: "yearMonth", 
                       label: "YEAR-MONTH", 
                       width: 150, 
                       numeric: false 
                     } ];
+
     for (let ward of wards) {
-      columns.push({ name: `ward${ward.ward}`, 
-                     label: `WARD #${ward.ward}`, 
+      columns.push({ name: `ward${ward}`, 
+                     label: `WARD #${ward}`, 
                      width: 100, 
                      numeric: true,
-                     key: ward.ward });
+                     key: ward });
     }
 
-    let presentation = _.reduce(data, (acc, datapoint) => {
-      console.log('datapoint: ', datapoint);
-      let key = `${datapoint["year"]}-${datapoint["month"]}`
-      if (acc[key]) {
-        acc[key] = _.merge(acc[key], { [`${datapoint.ward.ward}`]: datapoint.count });
-      } else {
-        acc[key] = { [`${datapoint.ward.ward}`]: datapoint.count }
-      }
-      return acc;
-    }, {});
+    let params = {
+      wardIds: wards,
+      fromYear: fromYear
+    };
 
-    console.log('presentation: ', presentation);
+    if(fromMonth) { params = { ...params, fromMonth } }
+    if(toYear) { params = { ...params, toYear } }
+    if(toMonth) { params = { ...params, toMonth} }
 
     return (
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            {columns.map((column, idx) => (
-              <TableCell
-                key={idx}
-                numeric={column.numeric}
-                style={{ width: column.width }}
-              >
-                {column.label}
-              </TableCell> 
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {_.keys(presentation).map((key, rowIdx) => {
-            let rowData = presentation[key];
-            return (
-              <TableRow key={rowIdx}>
-                {columns.map((column, colIdx) => {
-                  if (!column.key) {
-                    return (
-                      <TableCell 
-                        numeric={column.numeric}
-                        style={{ width: column.width }}
-                        key={colIdx}
-                      >
-                        {key}
-                      </TableCell>
-                    );
-                  } else {
-                    return (
-                      <TableCell 
-                        numeric={column.numeric}
-                        style={{ width: column.width }}
-                        key={colIdx}
-                      >
-                        {rowData[column.key]}
-                      </TableCell>
-                    );
-                  }
-                })}
+      <Query
+        query={GET_GRAFITTI_REPORT}
+        variables={params}
+      >
+      {({loading, error, data}) => {
+        if (loading) {
+          return (
+            <Typography color="textSecondary">Loading data ...</Typography>
+          );
+        }
+        if (error) {
+          return (
+            <Typography color="error">Error fetching the data: {error}</Typography>
+          );
+        }
+
+        let presentation = _.reduce(data.grafittiReport, (acc, datapoint) => {
+          let key = `${datapoint["year"]}-${datapoint["month"]}`
+          if (acc[key]) {
+            acc[key] = _.merge(acc[key], { [`${datapoint.ward.ward}`]: datapoint.count });
+          } else {
+            acc[key] = { [`${datapoint.ward.ward}`]: datapoint.count }
+          }
+          return acc;
+        }, {});
+    
+        return (
+          <Table className={classes.table}>
+            <TableHead>
+              <TableRow>
+                {columns.map((column, idx) => (
+                  <TableCell
+                    key={idx}
+                    numeric={column.numeric}
+                    style={{ width: column.width }}
+                  >
+                    {column.label}
+                  </TableCell> 
+                ))}
               </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+            </TableHead>
+            <TableBody>
+              {_.keys(presentation).map((key, rowIdx) => {
+                let rowData = presentation[key];
+                return (
+                  <TableRow key={rowIdx}>
+                    {columns.map((column, colIdx) => {
+                      if (!column.key) {
+                        return (
+                          <TableCell 
+                            numeric={column.numeric}
+                            style={{ width: column.width }}
+                            key={colIdx}
+                          >
+                            {key}
+                          </TableCell>
+                        );
+                      } else {
+                        return (
+                          <TableCell 
+                            numeric={column.numeric}
+                            style={{ width: column.width }}
+                            key={colIdx}
+                          >
+                            {rowData[column.key]}
+                          </TableCell>
+                        );
+                      }
+                    })}
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        );
+      }} 
+      </Query>
     );
   }
 }
 
 const styles = theme => ({
   table: {
-    // minWidth: 600,
     tableLayout: 'fixed'
   },
 });
