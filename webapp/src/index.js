@@ -7,6 +7,8 @@ import { ApolloLink } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
 import { ApolloProvider } from 'react-apollo';
 
+import { SnackbarProvider } from './SnackbarProvider';
+
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import primary from 'material-ui/colors/blue';
 import secondary from 'material-ui/colors/purple';
@@ -26,7 +28,9 @@ const theme = createMuiTheme({
 ReactDOM.render(
   <ApolloProvider client={client}>
     <MuiThemeProvider theme={theme}>
-      <App />
+      <SnackbarProvider>
+        <App />
+      </SnackbarProvider>
     </MuiThemeProvider>
   </ApolloProvider>, 
   document.getElementById('root'));

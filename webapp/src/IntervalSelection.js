@@ -5,6 +5,7 @@ import { withStyles } from 'material-ui/styles';
 import MonthSelction from './MonthSelection';
 import YearSelection from './YearSelection';
 import moment from 'moment';
+import { SnackbarContext } from './SnackbarProvider';
 
 class IntervalSelection extends Component {
 
@@ -35,14 +36,14 @@ class IntervalSelection extends Component {
     }
   }
 
-  onChange = (field, event) => {
+  onChange = (field, event, displayError) => {
     let prospectiveState = { ...this.state, [field]: event.target.value === "" ? null : event.target.value }
     let invalidMessage = this.validCombination(prospectiveState);
     if(invalidMessage == null) {
       this.setState((prevState) => (prospectiveState));
       this.props.onChange(prospectiveState);
     } else {
-      console.log("invalid combination: ", invalidMessage);
+      displayError(invalidMessage);
     }
   }
 
@@ -50,44 +51,50 @@ class IntervalSelection extends Component {
     let { classes } = this.props;
     let { fromYear, fromMonth, toYear, toMonth } = this.state;
     return (
-      <div>
-        <Card className={classes.card}>
-          <CardContent>
-            <Typography className={classes.title} color="primary">
-              Report Interval
-            </Typography>
-            <FormHelperText>From:</FormHelperText>  
-            <FormGroup row>
-              <YearSelection 
-                startYear={2010}
-                value={fromYear}
-                onChange={(event) => { this.onChange('fromYear', event) }}
-              />
-              <MonthSelction
-                value={fromMonth} 
-                onChange={(event) => { this.onChange('fromMonth', event) }}
-              />
-            </FormGroup>
-            <FormHelperText>To:</FormHelperText>
-            <FormGroup row>                            
-              <YearSelection 
-                startYear={2010}
-                value={toYear} 
-                onChange={(event) => { this.onChange('toYear', event) }}
-              />
-              <MonthSelction 
-                value={toMonth}
-                onChange={(event) => { this.onChange('toMonth', event) }}
-              />
-            </FormGroup>
-          </CardContent>
-          <CardActions>
-            <Button size="small" onClick={() => {
-
-            }}>Reset</Button>
-          </CardActions>
-        </Card>
-      </div>
+      <SnackbarContext.Consumer>
+      {(displayError) => {
+        return (
+          <div>
+          <Card className={classes.card}>
+            <CardContent>
+              <Typography className={classes.title} color="primary">
+                Report Interval
+              </Typography>
+              <FormHelperText>From:</FormHelperText>  
+              <FormGroup row>
+                <YearSelection 
+                  startYear={2010}
+                  value={fromYear}
+                  onChange={(event) => { this.onChange('fromYear', event, displayError); }}
+                />
+                <MonthSelction
+                  value={fromMonth} 
+                  onChange={(event) => { this.onChange('fromMonth', event, displayError); }}
+                />
+              </FormGroup>
+              <FormHelperText>To:</FormHelperText>
+              <FormGroup row>                            
+                <YearSelection 
+                  startYear={2010}
+                  value={toYear} 
+                  onChange={(event) => { this.onChange('toYear', event, displayError); }}
+                />
+                <MonthSelction 
+                  value={toMonth}
+                  onChange={(event) => { this.onChange('toMonth', event, displayError); }}
+                />
+              </FormGroup>
+            </CardContent>
+            <CardActions>
+              <Button size="small" onClick={() => {
+  
+              }}>Reset</Button>
+            </CardActions>
+          </Card>
+        </div>
+        )
+      }}
+      </SnackbarContext.Consumer>
     );
   }
 }
