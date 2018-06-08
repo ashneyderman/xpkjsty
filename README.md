@@ -41,6 +41,24 @@ Solution consists of two parts:
 
   Webapp was created with the help of react-create-app scripts. So, all you know about that project applies here too.
 
+## Release instructions
+
+  Both projects can be deployed to the cloud. Dockerfile is provided for both. To release API:
+
+  * cd ./api
+  * MIX_ENV=prod mix release --profile=tcb_challenge:prod
+  * docker build -t tcbchalapi:latest .
+
+  This will create a deplyable docker image. Note, relase built with distillery like that does not include erlang runtime. So when you build the release the elixir/erlang versions specified in the docker file (1.5.2/20) have to the versions with which you produce the release. Othewise, docker image will not be runnable. The manifests produced by distillery will mismatch the referenced libs. 
+
+  To build and release webapp
+
+  * cd ./webapp
+  * npm run build
+  * docker build -t tcbchalapp:latest .
+
+  This will create a deplyable docker image.
+
 ## API Known problems:
 
 * ORDER BY does not seem to work. I tried to add ORDER BY clause to the solution but socrata service complains about malformed query. I ran put of time to figure out why:
