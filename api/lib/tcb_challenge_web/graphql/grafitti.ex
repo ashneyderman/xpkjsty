@@ -2,6 +2,7 @@ defmodule TcbChallengeWeb.Graphql.Grafitti do
   require Logger
   alias TCBChallenge.Socrata
   alias TcbChallengeWeb.Graphql.Utils
+  use Timex
   
   def grafitti_report(_parent, args, _resolution) do
     with {:ok, wards, start_ym, end_ym} <- derive_service_arguments(args),
@@ -25,18 +26,30 @@ defmodule TcbChallengeWeb.Graphql.Grafitti do
     to_year    = Map.get(args, :to_year)
     to_month   = Map.get(args, :to_month)
 
-    case {from_year, from_month, to_year, to_month} do
-      {nil, _, _, _} -> {:error, "fromYear is a required parameter"}
-      {from_year, nil, nil, nil} -> {:ok, {from_year, 1}, {from_year, 12}}
-      {from_year, from_month, nil, nil} -> {:ok, {from_year, from_month}, nil}
-      {from_year, from_month, to_year, nil} -> {:ok, {from_year, from_month}, {to_year, from_month}}
-      _ -> verify_from_to_arguments({:ok, {from_year, from_month}, {to_year, to_month}})
+    case from_year do
+      nil -> {:error, "fromYear is a required parameter"}
+      _ -> verify_from_to_arguments({{from_year, from_month}, {to_year, to_month}})
     end
   end
 
-  defp verify_from_to_arguments({_, {_from_year, _from_month}, {_to_year, _to_month}}=r) do
-    # TODO: verification.
-    r
+  defp verify_from_to_arguments({{from_year, from_month}, {to_year, to_month}}) do
+    from_month = from_month || 1;
+    to_year    = to_year || from_year;
+    to_month   = to_month || 12;
+
+    format     = "{YYYY}-{0M}-{0D}T00:00:00.000"
+    try do
+      from_date = Timex.format!({from_year, from_month, 1}, format) |> Timex.parse!(format)
+      to_date   = Timex.format!({to_year, to_month, 1}, format) |> Timex.parse!(format)
+      if Timex.before?(from_date, to_date) do
+        {:ok, {from_year, from_month}, {to_year, to_month}}
+      else
+        {:error, "Please make sure from comes before the to."}
+      end
+    catch
+      _ -> 
+        {:error, "Either from or the to combination of month and year is invalid."}
+    end
   end
 
   defp derive_wards_argument(args) do

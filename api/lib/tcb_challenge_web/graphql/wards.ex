@@ -35,8 +35,17 @@ defmodule TcbChallengeWeb.Graphql.Wards do
 
   def fetch_wards(_parent, args, _resolution) do
     alderman_name = args[:alderman_name]
-    with {:ok, all_wards} <- Socrata.fetch_wards_by_alderman(alderman_name) do
+    with {:ok, alderman_name} <- required_alderman_name(args),  
+         {:ok, all_wards} <- Socrata.fetch_wards_by_alderman(alderman_name) do
       {:ok, all_wards |> Enum.map(&Utils.ward_keys_as_atoms/1)}
+    end
+  end
+
+  defp required_alderman_name(args) do
+    if args[:alderman_name] do
+      {:ok, args[:alderman_name]}
+    else
+      {:error, "Alderman partial name is required."}
     end
   end
 
