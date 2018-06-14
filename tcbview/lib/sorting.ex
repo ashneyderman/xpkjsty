@@ -4,7 +4,6 @@ defmodule TCBView.Sorting do
   # O n log n on average
   def quick_sort(nil), do: nil
   def quick_sort([]), do: []
-  def quick_sort([]), do: []
   def quick_sort([_]=r), do: r
   def quick_sort([l, r]) when l <= r, do: [l, r]
   def quick_sort([r, l]) when l > r, do: [r, l]
@@ -14,7 +13,7 @@ defmodule TCBView.Sorting do
   end
 
   def quick_split([v]=list, pivot) when v < pivot, do: {list, []}
-  def quick_split([_]=list, pivot), do: {[], list}
+  def quick_split([_]=list, _pivot), do: {[], list}
   def quick_split(list, pivot) do
     list |> Enum.reduce({[], []}, 
               fn(val, {left, right}) -> 
@@ -61,6 +60,6 @@ defmodule TCBView.Sorting do
 
   def do_insert_item([], item), do: [item]
   def do_insert_item([h | t], item) when h < item, do: [h | do_insert_item(t, item)]
-  def do_insert_item([h | _]=l, item), do: [item | l]
+  def do_insert_item(l, item) when is_list(l), do: [item | l]
 
 end
