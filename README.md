@@ -35,10 +35,6 @@ Solution consists of two parts:
 
   * Webapp - http://localhost:3000/
 
-  A working version of the application was  deployed to the cloud
-
-  * Webapp - https://tcbchalapp.kocomojo.net/
-
   Webapp was created with the help of react-create-app scripts. So, all you know about that project applies here too.
 
 ## Release instructions
