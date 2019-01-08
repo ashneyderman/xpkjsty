@@ -12,5 +12,4 @@ defmodule TcbChallenge do
     hash = String.replace(hash0, "\"", "")
     quote do: unquote(hash)
   end
-
 end

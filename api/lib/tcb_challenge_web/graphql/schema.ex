@@ -2,15 +2,15 @@ defmodule TcbChallengeWeb.Graphql.Schema do
   use Absinthe.Schema
   require Logger
   alias TcbChallengeWeb.Graphql.{Wards, Grafitti}
-  
-  import_types Absinthe.Type.Custom
-  import_types TcbChallengeWeb.Graphql.Types
-  
+
+  import_types(Absinthe.Type.Custom)
+  import_types(TcbChallengeWeb.Graphql.Types)
+
   @desc "TCB Challenge Schema"
   query name: "TCBChallenge" do
     @desc "Fetch all wards."
     field :all_wards, list_of(:ward) do
-      resolve &Wards.all_wards/3
+      resolve(&Wards.all_wards/3)
     end
 
     @desc """
@@ -21,10 +21,10 @@ defmodule TcbChallengeWeb.Graphql.Schema do
     """
     field :fetch_ward, :ward do
       @desc "ward number"
-      arg :ward, :id
+      arg(:ward, :id)
       @desc "alderman's patial name"
-      arg :alderman_name, :string
-      resolve &Wards.fetch_ward/3
+      arg(:alderman_name, :string)
+      resolve(&Wards.fetch_ward/3)
     end
 
     @desc """
@@ -32,8 +32,8 @@ defmodule TcbChallengeWeb.Graphql.Schema do
     """
     field :fetch_wards, list_of(:ward) do
       @desc "alderman's patial name"
-      arg :alderman_name, non_null(:string)
-      resolve &Wards.fetch_wards/3
+      arg(:alderman_name, non_null(:string))
+      resolve(&Wards.fetch_wards/3)
     end
 
     @desc """
@@ -44,20 +44,19 @@ defmodule TcbChallengeWeb.Graphql.Schema do
     """
     field :grafitti_report, list_of(:report_item) do
       @desc "list of ward numbers"
-      arg :ward_ids, list_of(:id)
+      arg(:ward_ids, list_of(:id))
       @desc "list of alderman's patial names"
-      arg :alderman_names, list_of(:string)
+      arg(:alderman_names, list_of(:string))
       @desc "start year of the report"
-      arg :from_year, non_null(:integer)
+      arg(:from_year, non_null(:integer))
       @desc "start month of the report"
-      arg :from_month, :integer
+      arg(:from_month, :integer)
       @desc "end year of the report"
-      arg :to_year, :integer
+      arg(:to_year, :integer)
       @desc "end month of the report"
-      arg :to_month, :integer
+      arg(:to_month, :integer)
 
-      resolve &Grafitti.grafitti_report/3
-    end 
+      resolve(&Grafitti.grafitti_report/3)
+    end
   end
-
 end

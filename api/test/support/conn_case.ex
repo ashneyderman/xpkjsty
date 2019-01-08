@@ -26,9 +26,7 @@ defmodule TcbChallengeWeb.ConnCase do
     end
   end
 
-
   setup tags do
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
-
 end

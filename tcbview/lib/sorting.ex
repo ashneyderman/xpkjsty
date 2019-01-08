@@ -63,3 +63,13 @@ defmodule TCBView.Sorting do
   def do_insert_item(l, item) when is_list(l), do: [item | l]
 
 end
+
+
+
+for i in `docker images | awk '{print $2}' | uniq`; do
+  git merge-base --is-ancestor HEAD ${i}
+  if [ $? == 1 ] 
+    then
+      echo "Delete ${i}"
+  fi  
+done

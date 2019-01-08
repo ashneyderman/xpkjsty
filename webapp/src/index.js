@@ -14,7 +14,7 @@ import primary from 'material-ui/colors/blue';
 import secondary from 'material-ui/colors/purple';
 import 'typeface-roboto';
 
-const uri = 'http://localhost:4000/api';
+const uri = 'https://tcbchalapi.kocomojo.net/api';
 const cache = new InMemoryCache();
 const client = new ApolloClient({cache, link: ApolloLink.from([new HttpLink({uri})])});
 

@@ -16,8 +16,7 @@ config :tcb_challenge, TcbChallengeWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "nGYUl37yqAjxRHOV5kvoN/1QyuNIMzTaN0iEWkb+RgPT8vhOay0Y6rrSyddsY06Z",
   render_errors: [view: TcbChallengeWeb.ErrorView, accepts: ~w(json)],
-  pubsub: [name: TcbChallenge.PubSub,
-           adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: TcbChallenge.PubSub, adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger
 config :logger, :console,
@@ -26,4 +25,4 @@ config :logger, :console,
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
-import_config "#{Mix.env}.exs"
+import_config "#{Mix.env()}.exs"

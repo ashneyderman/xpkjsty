@@ -15,5 +15,3 @@ api/erl_crash.dump
 # variables.
 api/config/*.secret.exs
 
-*.json
-*.txt

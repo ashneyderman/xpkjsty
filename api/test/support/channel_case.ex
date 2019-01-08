@@ -24,6 +24,4 @@ defmodule TcbChallengeWeb.ChannelCase do
       @endpoint TcbChallengeWeb.Endpoint
     end
   end
-
-
 end

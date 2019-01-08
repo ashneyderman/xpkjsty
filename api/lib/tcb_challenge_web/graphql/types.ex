@@ -12,13 +12,13 @@ defmodule TcbChallengeWeb.Graphql.Types do
   @desc "Grafitti Report Item"
   object :report_item do
     @desc "Ward that the report item is for"
-    field :ward,  :ward
+    # field :ward, :ward, resolve: 
+    field :ward, :ward
     @desc "Number of grafitti requests"
     field :count, :integer
     @desc "Year the report itme is for"
-    field :year,  :integer
+    field :year, :integer
     @desc "Month the report itme is for"
     field :month, :integer
   end
-
 end

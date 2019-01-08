@@ -7,5 +7,5 @@ defmodule TcbChallengeWeb.CORSRouter do
     log: [rejected: :info, invalid: :info],
     max_age: 600
 
-  resource "/*"
+  resource("/*")
 end

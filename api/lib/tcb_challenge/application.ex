@@ -9,7 +9,7 @@ defmodule TcbChallenge.Application do
     # Define workers and child supervisors to be supervised
     children = [
       # Start the endpoint when the application starts
-      supervisor(TcbChallengeWeb.Endpoint, []),
+      supervisor(TcbChallengeWeb.Endpoint, [])
       # Start your own worker by calling: TcbChallenge.Worker.start_link(arg1, arg2, arg3)
       # worker(TcbChallenge.Worker, [arg1, arg2, arg3]),
     ]
