@@ -18,12 +18,6 @@ Solution consists of two parts:
   * API http://localhost:4000/api
   * Status http://localhost:4000/status
 
-  A working version of the service was deployed to the cloud
-
-    GrapIQL - https://tcbchalapi.kocomojo.net/graphiql
-    API - https://tcbchalapi.kocomojo.net/api
-    Status - https://tcbchalapi.kocomojo.net/status
-
 #### Webapp build instructions
 
   * Have a latest(ish) version of node installed. I used v9.4.0
